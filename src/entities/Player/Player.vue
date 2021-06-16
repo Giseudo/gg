@@ -90,6 +90,8 @@ export default defineComponent({
     },
 
     update ({ deltaTime }: any) {
+      if (this.isLoading) return
+
       const velocity = this.movement.velocity.clone()
 
       this.model.position.add(

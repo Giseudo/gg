@@ -3,14 +3,14 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import { injectStrict } from '../../utils'
 import * as types from '../../types'
 
-type Textures = { [name: string]: Texture }
-type Models = { [name: string]: Object3D }
+type ResourcesTextures = { [name: string]: Texture }
+type ResourcesModels = { [name: string]: Object3D }
 
 class ResourcesService {
   private fbxLoader: FBXLoader = new FBXLoader()
   private textureLoader = new TextureLoader()
-  private textures: Textures = {}
-  private models: Models = {}
+  private textures: ResourcesTextures = {}
+  private models: ResourcesModels = {}
 
   constructor () { }
 
