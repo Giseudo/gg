@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Player from '../entities/Player.vue'
+import { Player } from '../entities'
 
 export default defineComponent({
   components: {

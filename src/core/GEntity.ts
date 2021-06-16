@@ -33,14 +33,14 @@ export default defineComponent({
     position (value) {
       const [ x, y, z ] = value
 
-      this.object.position.set(x, y, z)
+      this.object.position?.set(x, y, z)
     }
   },
 
   mounted () {
     const [ x, y, z ] = this.position
 
-    this.object.position.set(x, y, z)
+    this.object.position?.set(x, y, z)
 
     if (this.parent) {
       this.parent.add(this.object)

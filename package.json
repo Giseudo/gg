@@ -6,6 +6,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@types/node": "^15.12.2",
     "three": "^0.129.0",
     "vue": "^3.0.5",
     "vue-router": "^4.0.8"
