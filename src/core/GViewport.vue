@@ -17,7 +17,7 @@ type RendererState = {
   clock: Clock
 }
 
-const TIME_INTERVAL = 1 / 60
+const TIME_INTERVAL = 1 / 30
 
 export default defineComponent({
   name: 'GViewport',
