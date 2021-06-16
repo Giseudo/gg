@@ -1,5 +1,7 @@
 import { Object3D, Texture, TextureLoader } from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
+import { injectStrict } from '../../utils'
+import * as types from '../../types'
 
 type Textures = { [name: string]: Texture }
 type Models = { [name: string]: Object3D }
@@ -8,11 +10,11 @@ class ResourcesService {
   private fbxLoader: FBXLoader = new FBXLoader()
   private textureLoader = new TextureLoader()
   private textures: Textures = {}
-  private models: Models = []
+  private models: Models = {}
 
   constructor () { }
 
-  public async loadTexture (file: string): Promise<Texture> {
+  public loadTexture = async (file: string): Promise<Texture> => {
     if (this.textures[file]) return this.textures[file]
 
     this.textures[file] = await new Promise((resolve, reject) =>
@@ -27,7 +29,7 @@ class ResourcesService {
     return this.textures[file]
   }
 
-  public async loadObject(file: string): Promise<Object3D> {
+  public loadObject = async (file: string): Promise<Object3D> => {
     if (this.models[file])
       return this.models[file].clone()
 
@@ -44,6 +46,12 @@ class ResourcesService {
 
     return object
   }
+}
+
+export const useResourcesService = (): ResourcesService => {
+  const service = injectStrict(types.RESOURCES_SERVICE)
+
+  return service
 }
 
 export default ResourcesService

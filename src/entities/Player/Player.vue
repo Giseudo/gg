@@ -16,15 +16,16 @@
 </template>
 
 <script lang="ts">
-import { Object3D, Vector3 } from 'three'
-import { defineComponent, PropType, ref, markRaw } from 'vue'
-import { injectStrict, subscribe } from '../../utils'
-import GEntity from '../../core/GEntity'
-import GInputReader from '../../components/GInputReader'
-import GMovement from '../../components/GMovement'
-import playerTexture from './PlayerMatcap.png'
+import { Object3D, Vector3, Material } from 'three'
+import { defineComponent, PropType, ref } from 'vue'
+import { MatcapMaterial } from '../../materials'
+import { subscribe } from '../../utils'
+import { useResourcesService } from '../../services'
+import { GEntity } from '../../core'
+import { GInputReader, GMovement } from '../../components'
+
+import playerMatcapTex from './PlayerMatcap.png?url'
 import playerModel from './PlayerModel.fbx?url'
-import * as types from '../../types'
 
 export default defineComponent({
   components: {
@@ -52,14 +53,14 @@ export default defineComponent({
       inputReader: ref(GInputReader)
     }
 
-    const services = {
-      resources: injectStrict(types.RESOURCES_SERVICE)
-    }
+    const { loadObject, loadTexture } = useResourcesService()
 
     return {
       ...components,
-      ...services,
       model: {} as Object3D,
+      material: {} as Material,
+      loadTexture,
+      loadObject,
       subscribe
     }
   },
@@ -69,8 +70,16 @@ export default defineComponent({
   },
 
   async mounted () {
-    // const texture = await this.resources.loadTexture(playerTexture)
-    this.model = await this.resources.loadObject(playerModel)
+    this.material = new MatcapMaterial({
+      mainTex: await this.loadTexture(playerMatcapTex)
+    })
+
+    this.model = await this.loadObject(playerModel)
+
+    this.model.traverse((node: any) => {
+      if (node.isMesh)
+        node.material = this.material
+    })
 
     this.isLoading = false
   },
